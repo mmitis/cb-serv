@@ -1,0 +1,36 @@
+[
+  {
+    "name": "Bandwidth",
+    "link": "http://codebattle.dreamlab.pl/bandwidth",
+    "error": "Bandwidth has been failed. Please configure Bandwidth via the link",
+    "step" : [],
+    "visible" : true
+  },
+  {
+    "name": "Compression",
+    "link": "http://codebattle.dreamlab.pl/compression",
+    "error": "Compression has been failed. Please configure compression via the link",
+    "step" : [0],
+    "visible" : true
+  },
+  {
+    "name": "Encoding",
+    "link": "http://codebattle.dreamlab.pl/encoding",
+    "error": "Encoding has been failed. Please configure Encoding via the link",
+    "step" : [0,1],
+    "visible" : true
+  },
+  {
+    "name": "Subtitles",
+    "link": "http://codebattle.dreamlab.pl/subtitles",
+    "error": "Subtitles has been failed. Please configure Subtitles via the link",
+    "step" : [0,1,2],
+    "visible" : true,
+    "result" : "Everything is ok - look the monitoring"
+  },
+  {
+    "name": "Monitoring",
+    "visible" : true,
+    "step" : [0,1,2,3]
+  }
+]

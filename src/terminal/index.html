@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+<head>
+    <title>Video Platform - Live Stream Terminal</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/2.0.1/js/jquery.terminal.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/2.0.1/css/jquery.terminal.min.css"
+          rel="stylesheet"/>
+    <style>
+        html, body {
+            padding: 0;
+            margin: 0;
+        }
+
+        #term_demo {
+            width: 100% !important;
+            height: 100vh !important;;
+        }
+
+        @keyframes blink {
+            50% {
+                color: #000;
+                background: #0c0;
+                -webkit-box-shadow: 0 0 5px rgba(0,100,0,50);
+                box-shadow: 0 0 5px rgba(0,100,0,50);
+            }
+        }
+        @-webkit-keyframes blink {
+            50% {
+                color: #000;
+                background: #0c0;
+                -webkit-box-shadow: 0 0 5px rgba(0,100,0,50);
+                box-shadow: 0 0 5px rgba(0,100,0,50);
+            }
+        }
+        @-ms-keyframes blink {
+            50% {
+                color: #000;
+                background: #0c0;
+                -webkit-box-shadow: 0 0 5px rgba(0,100,0,50);
+                box-shadow: 0 0 5px rgba(0,100,0,50);
+            }
+        }
+        @-moz-keyframes blink {
+            50% {
+                color: #000;
+                background: #0c0;
+                -webkit-box-shadow: 0 0 5px rgba(0,100,0,50);
+                box-shadow: 0 0 5px rgba(0,100,0,50);
+            }
+        }
+        .terminal {
+            --background: #000;
+            --color: #0c0;
+            text-shadow: 0 0 3px rgba(0,100,0,50);
+        }
+        .cmd .cursor.blink {
+            -webkit-animation: 1s blink infinite;
+            animation: 1s blink infinite;
+            -webkit-box-shadow: 0 0 0 rgba(0,100,0,50);
+            box-shadow: 0 0 0 rgba(0,100,0,50);
+            border: none;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div id="term_demo">
+
+
+</div>
+<script>
+    jQuery(function ($) {
+
+        $('#term_demo').terminal(async function (command, term) {
+            if (command !== '') {
+                switch (command) {
+                    case 'check-status': {
+                        term.echo(' ');
+                        term.echo('Checking status of the video configuration:');
+                        term.echo('----------------------------------------------');
+                        term.echo(' ');
+
+                        const response = await $.get('/healthcheck', {teamId: 222});
+
+                        response.tasks.forEach((step, index) => {
+                            setTimeout(() => {
+                                term.echo('    [[b;red;]X  ' + step.error + ']');
+                                term.echo('          Link: ' + step.link);
+
+                            }, index * 400);
+                        });
+                        setTimeout(() => {
+                            term.echo(' ').resume();
+                        }, (response.tasks.length) * 200);
+
+                    }
+                        break;
+                    default:
+                        term.echo("Command is not supported.").resume();
+                }
+            }
+        }, {
+            greetings: 'Welcome in the Video Platform! \n----------------------\nUse this terminal to check if the configuration of the stream is correct.\n\nAvailable commands:\n - check-status <transmissionid> - used to check the status of the current live stream. (if transmissionid is not set - it will get the current one).\n \n',
+            prompt: 'video-platform> '
+        });
+    });
+</script>
+</body>
+</html>
